@@ -1,0 +1,13 @@
+com\example\mongoreactive\controller\UserController.class
+com\example\mongoreactive\controller\MessageController.class
+com\example\mongoreactive\repository\MessageRepository.class
+com\example\mongoreactive\repository\UserReaciveRepository.class
+com\example\mongoreactive\service\CustomReactiveUserService.class
+com\example\mongoreactive\MongoReactiveApplication.class
+com\example\mongoreactive\bean\UserDto.class
+com\example\mongoreactive\handler\UserHandlerFunction.class
+com\example\mongoreactive\controller\PageController.class
+com\example\mongoreactive\bean\CustomUser.class
+com\example\mongoreactive\bean\Message.class
+com\example\mongoreactive\MongoReactiveApplication$CustomSpringSecurityConfig.class
+com\example\mongoreactive\handler\MessageHandlerFunction.class

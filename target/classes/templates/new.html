@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.css}" rel="stylesheet"></link>
+</head>
+<body style ="padding-top:5rem">
+    <div th:insert = "nav.html :: navigation"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 order-md-1">
+                <h2>New message</h2>
+                <form method="POST" th:action="${isEdit} ? @{/message/update/id(id=${message.id})} : @{/message}" th:object ="${message}">
+                    <div class = "mb-3">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Example select</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <option th:each = "u : ${users}" th:text = "${u.username}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name">Name</label>
+                        <input class="form-control" id="name" th:field = "*{name}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" name="description" id="description" th:field="*{description}" rows ="3"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit" th:text = "${isEdit} ? Edit : Save">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

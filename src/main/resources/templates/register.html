@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Regiser</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.css}" rel="stylesheet"></link>
+</head>
+<body style="padding-top: 5rem">
+<div class="container">
+    <div th:insert = "nav.html :: navigation"></div>
+    <div class="row">
+        <div class="col-sm-6 offset-md-3">
+            <div th:if = "${error}" class="alert alert-warning" role="alert" style="margin-top:15px">
+                This is a secondary alert—check it out!
+            </div>
+            <form th:action = "@{/user/register}" method="POST" th:object = "${userDto}">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" th:field = "*{email}">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" th:classappend = "${passwordError} != null ? is-invalid : null" id="exampleInputPassword1" placeholder="Password" th:field = "*{password}">
+                    <div id="passwordHelp" class="invalid-feedback" th:if = "${passwordError}" th:text = "${passwordError}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="usernameInput">Username</label>
+                    <input type="text" class="form-control" th:classappend = "${usernameError} != null ? is-invalid : null" id="usernameInput" aria-describedby="usernameHelp" placeholder="Enter username" th:field = "*{username}">
+                    <div id="usernameHelp" class="invalid-feedback" th:if = "${usernameError}" th:text = "${usernameError}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="nameInput">Username</label>
+                    <input type="text" class="form-control" id="nameInput" aria-describedby="nameHelp" placeholder="Enter name" th:field = "*{name}">
+                    <small id="nameHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="surnameInput">Surname</label>
+                    <input type="text" class="form-control" id="surnameInput" aria-describedby="usernameHelp" placeholder="Enter surname" th:field = "*{lastName}">
+                    <small id="surnameHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="addressInput">Username</label>
+                    <input type="text" class="form-control" id="addressInput" aria-describedby="addressHelp" placeholder="Enter address" th:field = "*{address}">
+                    <small id="addressHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <!--    <div class="form-check">-->
+                <!--        <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+                <!--        <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
+                <!--    </div>-->
+                <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!--    <h1>Register page</h1>-->
+
+
+<!--    <form action="/user/register" th:object = "${userDto}" method="POST">-->
+<!--        <label>Username</label>-->
+<!--        <input type="text" th:field="*{username}" id="username">-->
+<!--        <br>-->
+<!--        <label>Password</label>-->
+<!--        <input type="password" th:field = "*{password}" id="password">-->
+<!--        <br>-->
+<!--        <label>Email</label>-->
+<!--        <input type="email" th:field="*{email}" id="email">-->
+<!--        <br>-->
+<!--        <label>name</label>-->
+<!--        <input type="text" th:field = "*{name}" id="name">-->
+<!--        <br>-->
+<!--        <label>Last name</label>-->
+<!--        <input type="text" th:field = "*{lastName}" id="lastName">-->
+<!--        <input type="submit" value="Register">-->
+<!--    </form>-->
+
+</body>
+</html>
