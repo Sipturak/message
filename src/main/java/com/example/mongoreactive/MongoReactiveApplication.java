@@ -4,6 +4,7 @@ import com.example.mongoreactive.bean.Message;
 import com.example.mongoreactive.handler.MessageHandlerFunction;
 import com.example.mongoreactive.handler.UserHandlerFunction;
 import com.example.mongoreactive.repository.MessageRepository;
+import lombok.Value;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,33 +88,31 @@ public class MongoReactiveApplication {
 	@Autowired
 	private MessageRepository messageRepository;
 
-//	@Autowired
-//	private MessageHandlerFunction messageHandlerFunction;
-//
-//	@Autowired
-//	private UserHandlerFunction userHandlerFunction;
+	@Autowired
+	private MessageHandlerFunction messageHandlerFunction;
+
+	@Autowired
+	private UserHandlerFunction userHandlerFunction;
 
 	@Bean
 	ApplicationRunner runner () {
 		return args -> {
-//
-//			Flux<Message> messageFlux =Flux.just(new Message("1", "Milos Maksimovic" , "description", LocalDate.now()),
-//					new Message("2", "Nemanja Vukovic", "description1", LocalDate.now()));
-//
-//			Flux<Message> savedData = messageFlux.flatMap(this.messageRepository::save);
-
 			this.messageRepository.deleteAll();
 		};
 	}
 
-//	@Bean
-//	RouterFunction <?> routerFunction (){
-//		return  RouterFunctions.route()
-//				.GET("messages", this.messageHandlerFunction::getAllMessages)
-//				.GET("message/{id}", this.messageHandlerFunction::getMessageById)
-//				.POST("user", this.userHandlerFunction::registerUser)
-//		.build();
-//	}
+	@Bean
+	RouterFunction <?> routerFunction (){
+		return  RouterFunctions.route()
+				.GET("messages", this.messageHandlerFunction::getAllMessages)
+				.POST("message", this.messageHandlerFunction::saveMessage)
+				.GET("message/{id}", this.messageHandlerFunction::getMessageById)
+				.DELETE("message/{id}", this.messageHandlerFunction::deleteMessageById)
+				.GET("user", this.userHandlerFunction::findAllUsers)
+				.GET("user/{id}", this.userHandlerFunction::findUserById)
+				.POST("user", this.userHandlerFunction::registerUser)
+		.build();
+	}
 
 
 }

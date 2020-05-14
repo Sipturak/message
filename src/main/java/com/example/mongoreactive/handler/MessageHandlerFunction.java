@@ -10,6 +10,8 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+
 @Component
 public class MessageHandlerFunction {
 
@@ -31,6 +33,26 @@ public class MessageHandlerFunction {
                 .status(HttpStatus.FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(messageMono, Message.class);
+    }
+
+    public Mono<ServerResponse> saveMessage(ServerRequest serverRequest){
+        Mono<Message> data = serverRequest
+                .bodyToMono(Message.class)
+                .map(message -> {
+                    message.setLocalDate(LocalDate.now());
+                    //get authentication principal
+                    //map to user dto
+                    //set user for meessage
+                    return message;
+                })
+                .flatMap(this.messageRepository::save);
+        return ServerResponse.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON).body(data, Message.class);
+    }
+
+    public Mono<ServerResponse> deleteMessageById(ServerRequest serverRequest){
+        String id = serverRequest.pathVariable("id");
+        this.messageRepository.deleteById(id);
+        return ServerResponse.noContent().build();
     }
 
 

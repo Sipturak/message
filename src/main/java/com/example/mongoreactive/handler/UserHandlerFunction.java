@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -34,5 +35,19 @@ public class UserHandlerFunction {
                 .location(serverRequest.uri())
                 .body(body, UserDto.class);
     }
+
+    public Mono<ServerResponse> findUserById(ServerRequest serverRequest){
+        String id  = serverRequest.pathVariable("id");
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(this.userReaciveRepository.findById(id), UserDto.class);
+    }
+
+    public Mono<ServerResponse> findAllUsers (ServerRequest serverRequest){
+        Flux<UserDto> userDtoFlux = this.userReaciveRepository.findAll();
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(userDtoFlux, UserDto.class);
+    }
+
+    //update method
+
+
 
 }
