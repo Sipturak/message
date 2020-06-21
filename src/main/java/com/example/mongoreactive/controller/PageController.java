@@ -38,6 +38,11 @@ public class PageController {
         return "login";
     }
 
+    @GetMapping(value = "/home")
+    public String getHomePage (){
+        return "home";
+    }
+
     @GetMapping("/register")
     public String registerPage(Model model){
         model.addAttribute("userDto", new UserDto());
@@ -45,18 +50,8 @@ public class PageController {
     }
 
     @GetMapping(value = "/index")
-    public Mono<String> getIndegPage(Model model , @AuthenticationPrincipal CustomUser customUserMono){
-        model.addAttribute("isInbox", true);
-        Flux<Message> messageFlux = this.messageRepository.findAll();
-        return messageFlux
-                .filter(message -> {
-                    if(customUserMono.getId().equals(message.getUserDto().getId()))
-                        return true;
-                    return false;
-                })
-                .collectList()
-                .doOnSuccess(item-> model.addAttribute("messages", item))
-                .then(Mono.just("index"));
+    public String getIndegPage(){
+        return  "index";
     }
 
     @GetMapping(value = "/new")

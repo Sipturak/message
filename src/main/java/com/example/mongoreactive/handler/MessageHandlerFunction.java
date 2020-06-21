@@ -1,18 +1,27 @@
 package com.example.mongoreactive.handler;
 
+import com.example.mongoreactive.bean.CustomUser;
+import com.example.mongoreactive.bean.UserDto;
 import com.example.mongoreactive.repository.MessageRepository;
 import com.example.mongoreactive.bean.Message;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.security.Principal;
 import java.time.LocalDate;
+import java.util.function.Consumer;
 
 @Component
+@Log4j2
 public class MessageHandlerFunction {
 
     @Autowired
@@ -36,25 +45,26 @@ public class MessageHandlerFunction {
     }
 
     public Mono<ServerResponse> saveMessage(ServerRequest serverRequest){
-        Mono<Message> data = serverRequest
-                .bodyToMono(Message.class)
-                .map(message -> {
-                    message.setLocalDate(LocalDate.now());
-                    //get authentication principal
-                    //map to user dto
-                    //set user for meessage
-                    return message;
-                })
-                .flatMap(this.messageRepository::save);
-        return ServerResponse.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON).body(data, Message.class);
+        return serverRequest.principal()
+                .map(Principal::getName)
+                .flatMap(s -> {
+                   return ServerResponse.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON)
+                           .body(
+                                   serverRequest.bodyToMono(Message.class)
+                                   .map(message -> {
+                                       message.setLocalDate(LocalDate.now());
+                                       message.setMessageOwner(s);
+                                       return message;
+                                   })
+                                   .flatMap(this.messageRepository::save)
+                                   , Message.class);
+                });
     }
 
     public Mono<ServerResponse> deleteMessageById(ServerRequest serverRequest){
         String id = serverRequest.pathVariable("id");
-        this.messageRepository.deleteById(id);
+        log.info("Id of message is " + id);
+        this.messageRepository.deleteById(id).subscribe();
         return ServerResponse.noContent().build();
     }
-
-
-
 }

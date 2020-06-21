@@ -4,15 +4,16 @@ import com.example.mongoreactive.bean.Message;
 import com.example.mongoreactive.handler.MessageHandlerFunction;
 import com.example.mongoreactive.handler.UserHandlerFunction;
 import com.example.mongoreactive.repository.MessageRepository;
-import lombok.Value;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -44,6 +45,9 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.function.Consumer;
 
+import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+import static org.springframework.web.reactive.function.server.ServerResponse.ok;
+
 @SpringBootApplication
 @Log4j2
 public class MongoReactiveApplication {
@@ -60,7 +64,7 @@ public class MongoReactiveApplication {
 			serverHttpSecurity
 					.csrf().disable()
 					.authorizeExchange()
-						.pathMatchers( "/login", "/webjars/**","/login-error","/register").permitAll()
+						.pathMatchers( "/login", "/login-error" ,"/webjars/**", "/static/**","/register").permitAll()
 						.pathMatchers(HttpMethod.POST, "/user/register").permitAll()
 						.pathMatchers(HttpMethod.DELETE, "/user/delete").permitAll()
 						.anyExchange()
@@ -103,7 +107,7 @@ public class MongoReactiveApplication {
 
 	@Bean
 	RouterFunction <?> routerFunction (){
-		return  RouterFunctions.route()
+		return  route()
 				.GET("messages", this.messageHandlerFunction::getAllMessages)
 				.POST("message", this.messageHandlerFunction::saveMessage)
 				.GET("message/{id}", this.messageHandlerFunction::getMessageById)
@@ -113,6 +117,7 @@ public class MongoReactiveApplication {
 				.POST("user", this.userHandlerFunction::registerUser)
 		.build();
 	}
+
 
 
 }

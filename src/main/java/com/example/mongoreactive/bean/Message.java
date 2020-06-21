@@ -23,5 +23,5 @@ public class Message implements Serializable {
     @NotEmpty
     private String description;
     private LocalDate localDate;
-    private UserDto userDto;
+    private String messageOwner;
 }
