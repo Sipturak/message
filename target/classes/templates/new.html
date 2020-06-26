@@ -4,14 +4,15 @@
             <div class="col-md-8 order-md-1">
                 <h2>New message</h2>
                 <form ng-submit = "addMessage()">
-<!--                    <div class = "mb-3">-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="exampleFormControlSelect1">Example select</label>-->
-<!--                            <select class="form-control" id="exampleFormControlSelect1">-->
-<!--&lt;!&ndash;                                <option th:each = "u : ${users}" th:text = "${u.username}"></option>&ndash;&gt;-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <div class = "mb-3">
+                        <div class="form-group">
+                            <label >Example select</label>
+                    <!--   ng options   -->
+                            <select class="form-control"
+                            ng-options = "item as item.username for item in users" ng-model = "selected">
+                            </select>
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <label for="name">Name</label>
                         <input class="form-control" id="name" ng-model = "message.name" required>

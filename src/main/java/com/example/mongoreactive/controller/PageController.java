@@ -55,23 +55,8 @@ public class PageController {
     }
 
     @GetMapping(value = "/new")
-    public Mono<String> getNew(@ModelAttribute Message message, Model model, @AuthenticationPrincipal CustomUser customUser){
-        return  this.userReaciveRepository.findAll()
-                .filter(userDto -> {
-                    if(customUser.getUsername().equals(userDto.getUsername()))
-                        return false;
-                    return true;
-                })
-                .collectList()
-                .doOnNext(new Consumer<List<UserDto>>() {
-                    @Override
-                    public void accept(List<UserDto> userDtos) {
-                        model.addAttribute("users", userDtos);
-                        model.addAttribute("isNew", true);
-
-                    }
-                })
-                .then(Mono.just("new"));
+    public String getNew(){
+        return "new";
     }
 
 

@@ -67,7 +67,7 @@ public class MongoReactiveApplication {
 						.pathMatchers( "/login", "/login-error" ,"/webjars/**", "/static/**","/register").permitAll()
 						.pathMatchers(HttpMethod.POST, "/user/register").permitAll()
 						.pathMatchers(HttpMethod.DELETE, "/user/delete").permitAll()
-						.anyExchange()
+					.anyExchange()
 						.authenticated()
 						.and().formLogin()
 						.loginPage("/login")
@@ -108,13 +108,12 @@ public class MongoReactiveApplication {
 	@Bean
 	RouterFunction <?> routerFunction (){
 		return  route()
-				.GET("messages", this.messageHandlerFunction::getAllMessages)
-				.POST("message", this.messageHandlerFunction::saveMessage)
+				.GET("messages", this.messageHandlerFunction::getMessageByUsername)
+				.POST("message/{username}", this.messageHandlerFunction::saveMessage)
 				.GET("message/{id}", this.messageHandlerFunction::getMessageById)
 				.DELETE("message/{id}", this.messageHandlerFunction::deleteMessageById)
-				.GET("user", this.userHandlerFunction::findAllUsers)
+				.GET("users", this.userHandlerFunction::findAllUsers)
 				.GET("user/{id}", this.userHandlerFunction::findUserById)
-				.POST("user", this.userHandlerFunction::registerUser)
 		.build();
 	}
 

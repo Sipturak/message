@@ -1,6 +1,22 @@
 var app = angular.module("main")
 
 app.service("MessageService", messageService)
+app.service('UserService', userService)
+
+
+function userService($http){
+
+    function findAll (){
+        return $http.get('users').then(function(response){
+            return response.data;
+        })
+    }
+
+    return{
+        findAll : findAll
+    }
+
+}
 
 function messageService ($http){
 
@@ -16,8 +32,8 @@ function messageService ($http){
         })
     }
 
-    function saveMessage(message){
-        return $http.post('message', message).then(function(response){
+    function saveMessage(username, message){
+        return $http.post(`message/${username}`, message).then(function(response){
             return response.data;
         })
     }

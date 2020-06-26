@@ -14,12 +14,9 @@
     <form th:action="@{/login}" method="POST" style="padding:100px">
         <div th:if = "${error}" th:text="${errorMessage}" class="alert alert-danger text-center" role="alert">
         </div>
-<!--        <p  style="color:red" class="text-center"></p>-->
-<!--        <label>Username</label>-->
         <div class="form-group">
            <label class="sr-only">Username</label>
         <input type="text" name="username" id="username" class="form-control" placeholder="Username" required autofocus>
-<!--        <label>Password</label>-->
         </div>
         <div class="from-group">
             <label class="sr-only">Password</label>

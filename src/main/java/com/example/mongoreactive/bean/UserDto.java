@@ -1,5 +1,6 @@
 package com.example.mongoreactive.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -28,6 +29,7 @@ public class UserDto implements Serializable {
     private String username;
     @NotEmpty
     @Size(min = 10)
+    @JsonIgnore
     private String password;
     private String email;
     private String name;
